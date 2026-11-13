@@ -1,0 +1,497 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>مسابقه پایتون توکا پیشرو</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&family=Vazirmatn:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout concept: white page, one violet cube turning above a perspective grid beside the headline,
+   a keyword ribbon, then the form next to a Python window that writes the student's data as code. */
+:root {
+  --paper: #ffffff;
+  --mist: #f7f3ff;
+  --lilac-soft: #ede9fe;
+  --lilac: #c9b8fb;
+  --violet: #6d28d9;
+  --violet-deep: #3b1a78;
+  --ink: #1c1030;
+  --ink-soft: #5b4d78;
+  --line: #e5dcf7;
+  --code-bg: #1c1030;
+  --danger: #b42318;
+  --font-display: "Lalezar", "Vazirmatn", Tahoma, sans-serif;
+  --font-body: "Vazirmatn", "Segoe UI", Tahoma, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 16px/1.85 var(--font-body);
+  padding-block: 20px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+*, *::before, *::after { box-sizing: border-box; }
+.page { max-width: 1120px; margin-inline: auto; display: grid; gap: clamp(36px, 6vw, 72px); }
+
+/* header */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.05rem; }
+.glyph { width: 14px; height: 14px; background: var(--violet); border-radius: 3px; transform: rotate(45deg); box-shadow: 3px 3px 0 var(--lilac); }
+.tag { font-size: .85rem; font-weight: 700; color: var(--violet-deep); background: var(--lilac-soft); padding: 4px 14px; border-radius: 999px; }
+
+/* hero */
+.hero { position: relative; isolation: isolate; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); align-items: center; gap: 24px; border-radius: 28px; overflow: hidden; }
+.hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(60% 70% at 22% 50%, var(--lilac-soft), transparent 72%); }
+.copy { display: grid; gap: 18px; justify-items: start; padding-block: 12px; }
+.copy > * { animation: rise .6s cubic-bezier(.2, .8, .2, 1) backwards; }
+.copy > :nth-child(2) { animation-delay: .06s; }
+.copy > :nth-child(3) { animation-delay: .12s; }
+.copy > :nth-child(4) { animation-delay: .18s; }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+.eyebrow { margin: 0; display: inline-flex; align-items: center; gap: 10px; font-weight: 700; color: var(--violet); }
+.eyebrow::before { content: ""; width: 28px; height: 2px; background: var(--violet); }
+h1 { margin: 0; font: 400 clamp(2.5rem, 6.4vw, 4.6rem)/1.3 var(--font-display); text-wrap: balance; }
+.py { color: var(--violet); position: relative; isolation: isolate; white-space: nowrap; }
+.py::after { content: ""; position: absolute; inset-inline: -2%; bottom: .02em; height: .24em; background: var(--lilac); z-index: -1; border-radius: 4px; transform-origin: right; animation: draw .9s .35s cubic-bezier(.2, .8, .2, 1) backwards; }
+@keyframes draw { from { transform: scaleX(0); } }
+.lead { margin: 0; max-width: 36ch; font-size: 1.12rem; color: var(--ink-soft); }
+.cta { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; }
+.hint { color: var(--ink-soft); font-size: .92rem; }
+
+/* buttons */
+.btn { appearance: none; border: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; font: 700 1rem/1.2 var(--font-body); color: #fff; background: var(--violet); padding: 16px 28px; border-radius: 14px; box-shadow: 0 5px 0 var(--violet-deep), 0 14px 24px -10px rgba(59, 26, 120, .55); transition: transform .12s ease, box-shadow .12s ease, background .2s; }
+.btn:hover { background: #7c3aed; transform: translateY(-1px); }
+.btn:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--violet-deep), 0 6px 12px -8px rgba(59, 26, 120, .5); }
+.btn:focus-visible { outline: 3px solid var(--lilac); outline-offset: 3px; }
+.btn.ghost { background: var(--paper); color: var(--violet-deep); box-shadow: inset 0 0 0 1.5px var(--lilac); }
+.btn.ghost:hover { background: var(--mist); }
+.btn.wide { width: 100%; }
+
+/* 3D stage */
+.stage { position: relative; min-height: clamp(270px, 40vw, 430px); perspective: 1000px; overflow: hidden; display: grid; place-items: center; }
+.floor { position: absolute; left: 50%; bottom: -6%; width: 150%; height: 78%; transform: translateX(-50%) rotateX(68deg); transform-origin: 50% 100%; background-image: linear-gradient(var(--lilac) 1.5px, transparent 1.5px), linear-gradient(90deg, var(--lilac) 1.5px, transparent 1.5px); background-size: 44px 44px; -webkit-mask-image: radial-gradient(closest-side, #000 35%, transparent 100%); mask-image: radial-gradient(closest-side, #000 35%, transparent 100%); animation: floor 3.5s linear infinite; }
+@keyframes floor { to { background-position: 0 44px; } }
+.shadow { position: absolute; bottom: 15%; left: 50%; width: 46%; height: 26px; margin-left: -23%; border-radius: 50%; background: radial-gradient(ellipse, rgba(59, 26, 120, .38), transparent 70%); animation: shadow 6s ease-in-out infinite; }
+@keyframes shadow { 50% { transform: scale(.82); opacity: .7; } }
+.scene { --s: clamp(112px, 18vw, 172px); position: relative; width: 0; height: 0; transform-style: preserve-3d; transform: rotateX(var(--rx, -16deg)) rotateY(var(--ry, 0deg)); transition: transform .3s ease-out; }
+.bob { position: absolute; left: 0; top: 0; transform-style: preserve-3d; animation: bob 6s ease-in-out infinite; }
+@keyframes bob { 50% { transform: translateY(-14px); } }
+.cube { --d: calc(var(--s) / 2); position: absolute; left: 0; top: 0; width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2); transform-style: preserve-3d; animation: spin 20s linear infinite; }
+@keyframes spin { to { transform: rotateY(360deg); } }
+.face { position: absolute; inset: 0; display: grid; place-items: center; direction: ltr; font: 600 calc(var(--s) * .2)/1 var(--font-mono); color: var(--violet-deep); background: linear-gradient(145deg, rgba(255, 255, 255, .88), rgba(237, 233, 254, .8)); border: 2px solid var(--lilac); border-radius: 6px; box-shadow: inset 0 0 28px rgba(109, 40, 217, .14); }
+.f1 { transform: translateZ(var(--d)); }
+.f2 { transform: rotateY(180deg) translateZ(var(--d)); }
+.f3 { transform: rotateY(90deg) translateZ(var(--d)); }
+.f4 { transform: rotateY(-90deg) translateZ(var(--d)); }
+.f5 { transform: rotateX(90deg) translateZ(var(--d)); }
+.f6 { transform: rotateX(-90deg) translateZ(var(--d)); }
+.core { --c: calc(var(--s) * .4); --d: calc(var(--c) / 2); position: absolute; left: 50%; top: 50%; width: var(--c); height: var(--c); margin: calc(var(--c) / -2) 0 0 calc(var(--c) / -2); transform-style: preserve-3d; animation: spin 9s linear infinite reverse; }
+.core .face { background: rgba(109, 40, 217, .82); border-color: var(--violet-deep); box-shadow: none; border-radius: 3px; }
+.orbit { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-style: preserve-3d; transform: rotateX(var(--tilt)); }
+.orbit-spin { position: absolute; left: 0; top: 0; transform-style: preserve-3d; animation: spin var(--dur) linear infinite; }
+.mini { position: absolute; left: 0; top: 0; width: var(--m); height: var(--m); margin: calc(var(--m) / -2); transform: translateX(var(--r)); border: 2px solid var(--violet); background: rgba(124, 58, 237, .22); border-radius: 5px; }
+.o1 { --tilt: 62deg; --dur: 11s; --r: calc(var(--s) * .95); --m: 22px; }
+.o2 { --tilt: -48deg; --dur: 15s; --r: calc(var(--s) * 1.2); --m: 16px; }
+.o3 { --tilt: 18deg; --dur: 19s; --r: calc(var(--s) * 1.05); --m: 12px; }
+
+/* ribbon */
+.ribbon { direction: ltr; overflow: hidden; border-block: 1.5px solid var(--line); background: var(--mist); padding-block: 14px; }
+.track { display: flex; width: max-content; animation: slide 38s linear infinite; }
+.set { display: flex; gap: 34px; padding-right: 34px; font: 600 1.05rem/1 var(--font-mono); color: var(--violet); white-space: nowrap; }
+.set span { display: inline-flex; align-items: center; gap: 34px; }
+.set span:nth-child(3n) { color: var(--violet-deep); }
+.set span::after { content: ""; width: 7px; height: 7px; background: var(--lilac); transform: rotate(45deg); }
+@keyframes slide { to { transform: translateX(-50%); } }
+
+/* registration */
+.reg-head { display: grid; gap: 4px; margin-bottom: 22px; }
+.reg-head h2 { margin: 0; font: 400 clamp(1.9rem, 4vw, 2.6rem)/1.3 var(--font-display); }
+.reg-head p { margin: 0; color: var(--ink-soft); }
+.reg-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(20px, 4vw, 40px); align-items: start; }
+.card { background: var(--paper); border: 1.5px solid var(--line); border-radius: 22px; padding: clamp(20px, 4vw, 32px); box-shadow: 0 28px 50px -34px rgba(76, 29, 149, .45); }
+form, .done { display: grid; gap: 18px; }
+.field { display: grid; gap: 6px; min-width: 0; border: 0; padding: 0; margin: 0; }
+label, legend { font-weight: 700; font-size: .95rem; padding: 0; }
+input, select, textarea { font: 500 1rem/1.5 var(--font-body); color: var(--ink); background: var(--paper); border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px; width: 100%; min-width: 0; transition: border-color .15s, box-shadow .15s; }
+input:focus-visible, select:focus-visible, textarea:focus-visible { outline: none; border-color: var(--violet); box-shadow: 0 0 0 4px var(--lilac-soft); }
+[aria-invalid="true"] { border-color: var(--danger); }
+.err { margin: 0; color: var(--danger); font-size: .88rem; line-height: 1.6; }
+.err:empty { display: none; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.dob-row { display: grid; grid-template-columns: .85fr 1.4fr 1fr; gap: 10px; }
+#phone { direction: ltr; text-align: right; }
+.done h3 { margin: 0; font: 400 1.7rem/1.4 var(--font-display); }
+.done h3:focus { outline: none; }
+.done p { margin: 0; color: var(--ink-soft); }
+#msgBox { resize: none; line-height: 1.9; background: var(--mist); }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.note { min-height: 1.6em; color: var(--violet-deep); font-weight: 700; font-size: .92rem; }
+
+/* code window */
+.code-wrap { display: grid; gap: 12px; }
+.code { direction: ltr; background: var(--code-bg); color: #efe9ff; border-radius: 18px; overflow: hidden; font-family: var(--font-mono); box-shadow: 0 34px 60px -30px rgba(28, 16, 48, .7); transform: perspective(1000px) rotateX(var(--tx, 0deg)) rotateY(var(--ty, 0deg)); transition: transform .25s ease-out; }
+.code-bar { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: #2a1850; color: #b9a8e6; font-size: .82rem; }
+.code-bar::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #a78bfa; }
+.code-body { padding: 16px 0 18px; font-size: .9rem; line-height: 1.95; counter-reset: l; overflow-x: auto; }
+.ln { counter-increment: l; padding-right: 18px; white-space: pre; min-height: 1.95em; }
+.ln::before { content: counter(l); display: inline-block; width: 2.4em; margin-right: 1em; text-align: right; color: #6f5f95; }
+.k { color: #f5f3ff; }
+.s { color: #c4b5fd; }
+.c { color: #8a79b3; }
+.f { color: #f0abfc; }
+.v { color: #c4b5fd; unicode-bidi: isolate; }
+.v.none { color: #8a79b3; }
+.code-cap { margin: 0; color: var(--ink-soft); font-size: .92rem; }
+
+footer { text-align: center; color: var(--ink-soft); font-size: .9rem; }
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: minmax(0, 1fr); }
+  .stage { min-height: 280px; }
+  .reg-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 520px) {
+  .row2 { grid-template-columns: minmax(0, 1fr); }
+  .btn { padding: 15px 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .cube { transform: rotateY(32deg); }
+  .core { transform: rotateY(-20deg); }
+}
+</style>
+
+<div class="page" dir="rtl" lang="fa">
+  <header class="top">
+    <span class="brand"><i class="glyph"></i>توکا پیشرو</span>
+    <span class="tag">دوره اول</span>
+  </header>
+
+  <section class="hero" id="hero">
+    <div class="copy">
+      <p class="eyebrow">اولین دوره</p>
+      <h1>مسابقه برنامه‌نویسی <span class="py">پایتون</span></h1>
+      <p class="lead">مسابقه پایتون توکا پیشرو برای دانش‌آموزان. ثبت‌نام فقط چهار فیلد دارد و کمتر از یک دقیقه طول می‌کشد.</p>
+      <div class="cta">
+        <button class="btn" id="goReg" type="button">ثبت‌نام در مسابقه</button>
+        <span class="hint">نام، تاریخ تولد و شماره تماس</span>
+      </div>
+    </div>
+
+    <div class="stage" id="stage" aria-hidden="true">
+      <div class="floor"></div>
+      <div class="shadow"></div>
+      <div class="scene">
+        <div class="bob">
+          <div class="cube">
+            <div class="face f1">def</div>
+            <div class="face f2">for</div>
+            <div class="face f3">if</div>
+            <div class="face f4">class</div>
+            <div class="face f5">import</div>
+            <div class="face f6">while</div>
+            <div class="core">
+              <div class="face f1"></div><div class="face f2"></div><div class="face f3"></div>
+              <div class="face f4"></div><div class="face f5"></div><div class="face f6"></div>
+            </div>
+          </div>
+          <div class="orbit o1"><div class="orbit-spin"><div class="mini"></div></div></div>
+          <div class="orbit o2"><div class="orbit-spin"><div class="mini"></div></div></div>
+          <div class="orbit o3"><div class="orbit-spin"><div class="mini"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ribbon" aria-hidden="true">
+    <div class="track">
+      <div class="set"><span>def</span><span>for</span><span>while</span><span>if</span><span>else</span><span>import</span><span>class</span><span>return</span><span>print()</span><span>input()</span><span>range()</span><span>len()</span><span>list</span><span>dict</span></div>
+      <div class="set"><span>def</span><span>for</span><span>while</span><span>if</span><span>else</span><span>import</span><span>class</span><span>return</span><span>print()</span><span>input()</span><span>range()</span><span>len()</span><span>list</span><span>dict</span></div>
+    </div>
+  </div>
+
+  <section id="register">
+    <div class="reg-head">
+      <h2>ثبت‌نام</h2>
+      <p>همه فیلدها لازم است.</p>
+    </div>
+
+    <div class="reg-grid" id="regGrid">
+      <div class="card">
+        <form id="regForm" novalidate>
+          <div class="row2">
+            <div class="field">
+              <label for="firstName">نام</label>
+              <input id="firstName" name="firstName" type="text" autocomplete="given-name" maxlength="40" aria-describedby="err-firstName">
+              <p class="err" id="err-firstName"></p>
+            </div>
+            <div class="field">
+              <label for="lastName">نام خانوادگی</label>
+              <input id="lastName" name="lastName" type="text" autocomplete="family-name" maxlength="50" aria-describedby="err-lastName">
+              <p class="err" id="err-lastName"></p>
+            </div>
+          </div>
+
+          <fieldset class="field">
+            <legend>تاریخ تولد (شمسی)</legend>
+            <div class="dob-row">
+              <select id="bDay" name="bDay" aria-label="روز تولد" aria-describedby="err-dob"></select>
+              <select id="bMonth" name="bMonth" aria-label="ماه تولد" aria-describedby="err-dob"></select>
+              <select id="bYear" name="bYear" aria-label="سال تولد" aria-describedby="err-dob"></select>
+            </div>
+            <p class="err" id="err-dob"></p>
+          </fieldset>
+
+          <div class="field">
+            <label for="phone">شماره تماس</label>
+            <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="09123456789" maxlength="20" aria-describedby="err-phone">
+            <p class="err" id="err-phone"></p>
+          </div>
+
+          <button class="btn wide" type="submit">مرحله بعد</button>
+        </form>
+
+        <div class="done" id="done" hidden>
+          <h3 id="doneTitle" tabindex="-1">اطلاعاتت آماده است</h3>
+          <p>این متن را کپی کن و در چت یا گروه کلاس برای مدرس بفرست. ثبت‌نامت بعد از دریافت پیام کامل می‌شود.</p>
+          <textarea id="msgBox" rows="6" readonly aria-label="متن ثبت‌نام"></textarea>
+          <div class="actions" id="actions">
+            <button class="btn" id="copyBtn" type="button">کپی متن</button>
+            <button class="btn ghost" id="editBtn" type="button">ویرایش اطلاعات</button>
+          </div>
+          <p class="note" id="copyNote" role="status"></p>
+        </div>
+      </div>
+
+      <aside class="code-wrap" id="codeWrap">
+        <div class="code">
+          <div class="code-bar">registration.py</div>
+          <div class="code-body" role="img" aria-label="اطلاعات واردشده به شکل کد پایتون">
+            <div class="ln"><span class="c"># python contest, edition 1</span></div>
+            <div class="ln"><span class="k">student</span> = {</div>
+            <div class="ln">    <span class="s">"first_name"</span>: <span class="v none" id="cFirst">None</span>,</div>
+            <div class="ln">    <span class="s">"last_name"</span>: <span class="v none" id="cLast">None</span>,</div>
+            <div class="ln">    <span class="s">"birth"</span>: <span class="v none" id="cBirth">None</span>,</div>
+            <div class="ln">    <span class="s">"phone"</span>: <span class="v none" id="cPhone">None</span>,</div>
+            <div class="ln">}</div>
+            <div class="ln"></div>
+            <div class="ln"><span class="k">ready</span> = <span class="f">all</span>(student.<span class="f">values</span>())  <span class="c" id="cReady"># False</span></div>
+          </div>
+        </div>
+        <p class="code-cap">هر چه وارد می‌کنی همین‌جا به شکل کد پایتون نوشته می‌شود.</p>
+      </aside>
+    </div>
+  </section>
+
+  <footer>توکا پیشرو · اولین دوره مسابقه برنامه‌نویسی پایتون</footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // Add the teacher's chat links here to show an "open chat" button after the message is ready.
+  // Example: { label: 'تلگرام', href: 'https://t.me/USERNAME' }
+  var CONTACTS = [];
+
+  //#PURE-START
+  function toEn(s) {
+    return String(s)
+      .replace(/[۰-۹]/g, function (d) { return String(d.charCodeAt(0) - 1776); })
+      .replace(/[٠-٩]/g, function (d) { return String(d.charCodeAt(0) - 1632); });
+  }
+  function toFa(n) {
+    return String(n).replace(/\d/g, function (d) { return String.fromCharCode(1776 + Number(d)); });
+  }
+  function pad(n) { return ('0' + n).slice(-2); }
+  function normPhone(raw) {
+    var s = toEn(raw).replace(/[\s\-()]/g, '');
+    if (s.indexOf('+98') === 0) { s = '0' + s.slice(3); }
+    else if (s.indexOf('0098') === 0) { s = '0' + s.slice(4); }
+    else if (/^98\d{10}$/.test(s)) { s = '0' + s.slice(2); }
+    else if (/^9\d{9}$/.test(s)) { s = '0' + s; }
+    return s;
+  }
+  function phoneError(raw) {
+    var s = normPhone(raw);
+    if (!s) { return 'شماره تماس را وارد کن.'; }
+    if (!/^09\d{9}$/.test(s)) { return 'شماره موبایل را به شکل ۰۹۱۲۳۴۵۶۷۸۹ وارد کن.'; }
+    return '';
+  }
+  function nameError(v, label) {
+    var s = String(v).trim();
+    if (!s) { return label + ' را وارد کن.'; }
+    if (s.length < 2) { return label + ' باید حداقل دو حرف باشد.'; }
+    if (/[0-9۰-۹٠-٩]/.test(s)) { return label + ' نباید عدد داشته باشد.'; }
+    return '';
+  }
+  function isLeap(y) { return y % 4 === 3; }
+  function daysIn(m, y) { return m <= 6 ? 31 : (m <= 11 ? 30 : (isLeap(y) ? 30 : 29)); }
+  function dobError(d, m, y) {
+    if (!d || !m || !y) { return 'روز، ماه و سال تولد را انتخاب کن.'; }
+    if (Number(d) > daysIn(Number(m), Number(y))) { return 'این روز در ماه انتخاب‌شده وجود ندارد.'; }
+    return '';
+  }
+  function birthStr(d, m, y) { return (d && m && y) ? (y + '/' + pad(m) + '/' + pad(d)) : ''; }
+  //#PURE-END
+
+  function $(id) { return document.getElementById(id); }
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var months = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
+
+  function fill(sel, placeholder, items) {
+    var html = '<option value="" selected disabled>' + placeholder + '</option>';
+    items.forEach(function (it) { html += '<option value="' + it[0] + '">' + it[1] + '</option>'; });
+    sel.innerHTML = html;
+  }
+  var days = [], yrs = [], mons = [], i;
+  for (i = 1; i <= 31; i++) { days.push([i, toFa(i)]); }
+  for (i = 0; i < 12; i++) { mons.push([i + 1, months[i]]); }
+  for (i = 1399; i >= 1380; i--) { yrs.push([i, toFa(i)]); }
+  fill($('bDay'), 'روز', days);
+  fill($('bMonth'), 'ماه', mons);
+  fill($('bYear'), 'سال', yrs);
+
+  var form = $('regForm'), done = $('done'), attempted = false;
+
+  function values() {
+    return {
+      first: $('firstName').value.trim().replace(/\s+/g, ' '),
+      last: $('lastName').value.trim().replace(/\s+/g, ' '),
+      d: $('bDay').value, m: $('bMonth').value, y: $('bYear').value,
+      phone: normPhone($('phone').value)
+    };
+  }
+  var checks = {
+    firstName: function () { return nameError($('firstName').value, 'نام'); },
+    lastName: function () { return nameError($('lastName').value, 'نام خانوادگی'); },
+    dob: function () { return dobError($('bDay').value, $('bMonth').value, $('bYear').value); },
+    phone: function () { return phoneError($('phone').value); }
+  };
+  function showErr(key, msg) {
+    $('err-' + key).textContent = msg;
+    var els = key === 'dob' ? [$('bDay'), $('bMonth'), $('bYear')] : [$(key)];
+    els.forEach(function (el) {
+      if (msg) { el.setAttribute('aria-invalid', 'true'); } else { el.removeAttribute('aria-invalid'); }
+    });
+  }
+  function validateAll() {
+    var firstBad = null;
+    ['firstName', 'lastName', 'dob', 'phone'].forEach(function (k) {
+      var m = checks[k]();
+      showErr(k, m);
+      if (m && !firstBad) { firstBad = (k === 'dob') ? $('bDay') : $(k); }
+    });
+    return firstBad;
+  }
+
+  function setVal(id, text) {
+    var el = $(id);
+    if (text) { el.textContent = '"' + text + '"'; el.classList.remove('none'); }
+    else { el.textContent = 'None'; el.classList.add('none'); }
+  }
+  function renderCode() {
+    var v = values();
+    setVal('cFirst', v.first);
+    setVal('cLast', v.last);
+    setVal('cBirth', birthStr(v.d, v.m, v.y));
+    setVal('cPhone', v.phone);
+    var ok = !checks.firstName() && !checks.lastName() && !checks.dob() && !checks.phone();
+    $('cReady').textContent = ok ? '# True' : '# False';
+  }
+  function onChange() {
+    renderCode();
+    if (attempted) { validateAll(); }
+  }
+  form.addEventListener('input', onChange);
+  form.addEventListener('change', onChange);
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    attempted = true;
+    var bad = validateAll();
+    if (bad) { bad.focus(); return; }
+    var v = values();
+    $('msgBox').value = [
+      'ثبت‌نام مسابقه برنامه‌نویسی پایتون توکا پیشرو',
+      'نام: ' + v.first,
+      'نام خانوادگی: ' + v.last,
+      'تاریخ تولد: ' + birthStr(v.d, v.m, v.y),
+      'شماره تماس: ' + v.phone
+    ].join('\n');
+    $('copyNote').textContent = '';
+    form.hidden = true;
+    done.hidden = false;
+    $('doneTitle').focus();
+  });
+
+  $('editBtn').addEventListener('click', function () {
+    done.hidden = true;
+    form.hidden = false;
+    $('firstName').focus();
+  });
+
+  $('copyBtn').addEventListener('click', function () {
+    var box = $('msgBox'), note = $('copyNote');
+    function fallback() {
+      box.focus();
+      box.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+      note.textContent = ok ? 'متن کپی شد.' : 'متن انتخاب شد. آن را کپی کن.';
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(box.value).then(function () { note.textContent = 'متن کپی شد.'; }, fallback);
+    } else {
+      fallback();
+    }
+  });
+
+  CONTACTS.forEach(function (c) {
+    if (!c || typeof c.href !== 'string' || c.href.indexOf('https://') !== 0) { return; }
+    var a = document.createElement('a');
+    a.className = 'btn ghost';
+    a.href = c.href;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.textContent = c.label || 'باز کردن چت';
+    $('actions').appendChild(a);
+  });
+
+  $('goReg').addEventListener('click', function () {
+    $('register').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  });
+
+  // pointer parallax for the cube and a slight tilt for the code window
+  if (!reduce && window.matchMedia && window.matchMedia('(pointer: fine)').matches) {
+    var hero = $('hero'), stage = $('stage'), reg = $('register'), codeWrap = $('codeWrap');
+    hero.addEventListener('pointermove', function (e) {
+      var r = hero.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5;
+      var y = (e.clientY - r.top) / r.height - 0.5;
+      stage.querySelector('.scene').style.setProperty('--ry', (x * -24) + 'deg');
+      stage.querySelector('.scene').style.setProperty('--rx', (-16 + y * -12) + 'deg');
+    });
+    hero.addEventListener('pointerleave', function () {
+      var s = stage.querySelector('.scene');
+      s.style.removeProperty('--ry');
+      s.style.removeProperty('--rx');
+    });
+    reg.addEventListener('pointermove', function (e) {
+      var r = codeWrap.getBoundingClientRect();
+      var x = (e.clientX - (r.left + r.width / 2)) / window.innerWidth;
+      var y = (e.clientY - (r.top + r.height / 2)) / window.innerHeight;
+      codeWrap.style.setProperty('--ty', (x * 10) + 'deg');
+      codeWrap.style.setProperty('--tx', (y * -8) + 'deg');
+    });
+    reg.addEventListener('pointerleave', function () {
+      codeWrap.style.removeProperty('--ty');
+      codeWrap.style.removeProperty('--tx');
+    });
+  }
+
+  renderCode();
+})();
+</script>
+
+</body></html>
